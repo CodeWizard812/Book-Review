@@ -4,6 +4,8 @@ import 'dotenv/config';
 import { pool } from './config/db.js';
 import authRoutes from './routes/auth.js';
 import bookRoutes from './routes/books.js';
+import reviewRoutes from './routes/reviews.js';
+import { searchBooks } from './controllers/bookController.js';
 
 const app = express();
 const PORT = process.env.PORT || 3000;
@@ -21,6 +23,11 @@ pool.connect((err) => {
 // Routes
 app.use('', authRoutes);
 app.use('/books', bookRoutes);
+app.use('/reviews', reviewRoutes);
+app.get('/search', searchBooks);
+
+// Health check
+app.get('/', (req, res) => res.send('Book Review API'));
 
 app.listen(PORT, () => {
   console.log(`Server running on port ${PORT}`);
